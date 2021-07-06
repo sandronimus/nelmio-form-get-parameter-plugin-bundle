@@ -77,9 +77,14 @@ final class FormGetParameterRouteDescriber implements RouteDescriberInterface
                     throw new RuntimeException('Only one-level forms supported');
                 }
 
+                $name = $formItem->getName();
+                if ($formItem->getParent() && $formItem->getParent()->getName()) {
+                    $name = $formItem->getParent()->getName()."[".$formItem->getName()."]";
+                }
+
                 $parameter = new Parameter([
                     'in'       => 'query',
-                    'name'     => $formItem->getName(),
+                    'name'     => $name,
                     'required' => $formItem->getConfig()->getRequired(),
                     'type'     => $this->getParameterTypeForFormType(
                         $formItem->getConfig()->getType()->getInnerType()
