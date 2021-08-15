@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Routing\Route;
@@ -73,25 +76,43 @@ final class FormGetParameterRouteDescriber implements RouteDescriberInterface
             $parameters = $operation->getParameters();
 
             foreach ($filterForm->all() as $formItem) {
-                if ($formItem->count() > 0) {
-                    throw new RuntimeException('Only one-level forms supported');
-                }
 
                 $name = $formItem->getName();
                 if ($formItem->getParent() && $formItem->getParent()->getName()) {
                     $name = $formItem->getParent()->getName()."[".$formItem->getName()."]";
                 }
 
-                $parameter = new Parameter([
-                    'in'       => 'query',
-                    'name'     => $name,
-                    'required' => $formItem->getConfig()->getRequired(),
-                    'type'     => $this->getParameterTypeForFormType(
-                        $formItem->getConfig()->getType()->getInnerType()
-                    ),
-                ]);
+                if ($formItem->count() == 0) {
+                    $parameter = new Parameter([
+                        'in'       => 'query',
+                        'name'     => $name,
+                        'required' => $formItem->getConfig()->getRequired(),
+                        //'description' => '',
+                        'type'     => $this->getParameterTypeForFormType(
+                            $formItem->getConfig()->getType()->getInnerType()
+                        ),
+                    ]);
+    
+                    $parameters->add($parameter);
+                }
 
-                $parameters->add($parameter);
+                if ($formItem->count() > 0) {
+                    foreach ($formItem as $subForm) {
+                        $subFormName = $name."[".$subForm->getName()."]";
+
+                        $parameter = new Parameter([
+                            'in'       => 'query',
+                            'name'     => $subFormName,
+                            //'description' => '',
+                            'required' => $subForm->getConfig()->getRequired(),
+                            'type'     => $this->getParameterTypeForFormType(
+                                $subForm->getConfig()->getType()->getInnerType()
+                            ),
+                        ]);
+                        $parameters->add($parameter);
+                    }
+                }
+
             }
         }
     }
@@ -103,6 +124,14 @@ final class FormGetParameterRouteDescriber implements RouteDescriberInterface
      */
     private function getParameterTypeForFormType(FormTypeInterface $formType): string
     {
+        if ($formType instanceof ChoiceType) {
+            return 'choice';
+        }
+
+        if ($formType instanceof NumberType) {
+            return 'number';
+        }
+
         if ($formType instanceof IntegerType) {
             return 'integer';
         }
@@ -117,6 +146,10 @@ final class FormGetParameterRouteDescriber implements RouteDescriberInterface
 
         if ($formType instanceof DateTimeType) {
             return 'dateTime';
+        }
+
+        if ($formType instanceof CollectionType) {
+            return 'collection';
         }
 
         return 'string';
