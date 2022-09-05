@@ -1,6 +1,6 @@
 services:
     Sandronimus\NelmioFormGetParameterPluginBundle\Services\FormGetParameterRouteDescriber:
-        autowire: true
-        autoconfigure: true
+        arguments:
+            $formFactory: '@form.factory'
         tags:
             - 'nelmio_api_doc.route_describer'
