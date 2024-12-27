@@ -10,7 +10,14 @@
     "symfony/form": "^6.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5",
+    "symfony/asset": "^6.4",
+    "symfony/debug-bundle": "^6.4",
+    "symfony/flex": "^2.4",
+    "symfony/runtime": "^6.4",
+    "symfony/twig-bundle": "^6.4",
+    "symfony/web-profiler-bundle": "^6.4",
+    "twig/twig": "^3"
   },
   "autoload": {
     "psr-4": {
@@ -23,6 +30,20 @@
   "autoload-dev": {
     "psr-4": {
       "Sandronimus\\NelmioFormGetParameterPluginBundle\\Tests\\": "Tests/"
+    }
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "6.4.*",
+      "docker": false
+    },
+    "public-dir": "/Tests/public"
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/runtime": true,
+      "symfony/flex": true
     }
   }
 }

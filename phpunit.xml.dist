@@ -10,6 +10,11 @@
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="SHELL_VERBOSITY" value="-1" />
+
+        <!-- ###+ symfony/framework-bundle ### -->
+        <env name="APP_ENV" value="test"/>
+        <env name="APP_SECRET" value="179ce5b036b33238ea2e61ec88981ac0"/>
+        <!-- ###- symfony/framework-bundle ### -->
     </php>
 
     <testsuites>

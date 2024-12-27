@@ -1,7 +1,7 @@
 NelmioFormGetParameterPluginBundle
 ==================================
 
-This bundle extends NelmioApiDocBundle by providing ability to auto-register simple forms items as GET parameters.
+This bundle extends NelmioApiDocBundle by providing ability to auto-register forms as GET parameters.
 
 Installation
 ------------
@@ -12,13 +12,15 @@ Install with composer:
 composer require sandronimus/nelmio-form-get-parameter-plugin-bundle
 ```
 
+Add `Sandronimus\NelmioFormGetParameterPluginBundle\NelmioFormGetParameterPluginBundle` to your bundles.
+
 How To Use
 ----------
 
-Add annotation to your controller action:
+Add attribute to your controller action:
 
 ```
-@FormGetParameter(formType=SomeFormType::class)
+#[FormGetParameter(SomeFormType::class)]
 ```
 
-Be aware only simple one-level forms supported.
+And you will get whole form mapped as GET parameters in API documentation.

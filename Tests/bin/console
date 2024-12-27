@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+use Sandronimus\NelmioFormGetParameterPluginBundle\Tests\TestKernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
+if (!is_file(dirname(__DIR__, 2).'/vendor/autoload_runtime.php')) {
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
+}
+
+require_once dirname(__DIR__, 2).'/vendor/autoload_runtime.php';
+
+return function (array $context) {
+    $kernel = new TestKernel('dev', true);
+
+    return new Application($kernel);
+};

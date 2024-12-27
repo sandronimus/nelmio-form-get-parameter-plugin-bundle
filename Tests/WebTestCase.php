@@ -9,7 +9,7 @@ class WebTestCase extends BaseWebTestCase
 {
     protected static function createKernel(array $options = []): KernelInterface
     {
-        return new TestKernel();
+        return new TestKernel('test', true);
     }
 
 }
