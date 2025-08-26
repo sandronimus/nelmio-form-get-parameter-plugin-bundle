@@ -1,7 +1,8 @@
 <?php
 
+namespace Sandronimus\NelmioFormGetParameterPluginBundle\Tests;
+
 use OpenApi\Attributes\OpenApi;
-use Sandronimus\NelmioFormGetParameterPluginBundle\Tests\WebTestCase;
 
 class FormGetParameterTest extends WebTestCase
 {
